@@ -19,9 +19,10 @@ public class CodewarsUserController {
 
     @PostMapping("/addUser/{username}")
     public ResponseEntity<CodewarsUserDTO> addCodewarsUser(@PathVariable String username) {
-        CodewarsUserDTO codeWarsUser = getCodewarsUserService.getCodewarsUserService(username);
-        return ResponseEntity.status(HttpStatus.OK).body(codewarsService.addUser(codeWarsUser));
+        CodewarsUserDTO codewarsUser = getCodewarsUserService.getCodewarsUserService(username);
+        return ResponseEntity.status(HttpStatus.OK).body(codewarsService.addUser(codewarsUser));
     }
+
 
 
 }
