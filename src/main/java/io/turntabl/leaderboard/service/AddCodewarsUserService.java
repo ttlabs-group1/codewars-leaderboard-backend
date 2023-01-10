@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CodewarsService {
+public class AddCodewarsUserService {
 
 
     private final CodewarsRepository codewarsRepository;
@@ -25,4 +25,7 @@ public class CodewarsService {
         return codewarsUser;
     }
 
+    public void delete(String username) {
+        codewarsRepository.deleteByUsername(username);
+    }
 }
