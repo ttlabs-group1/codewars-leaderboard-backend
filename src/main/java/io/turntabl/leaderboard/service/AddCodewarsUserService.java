@@ -3,6 +3,7 @@ package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.exceptions.UserAlreadyExistsException;
+import io.turntabl.leaderboard.model.CodewarsUser;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
