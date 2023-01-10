@@ -3,6 +3,7 @@ package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.exceptions.UserAlreadyExistsException;
+import io.turntabl.leaderboard.model.CodewarsUser;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AddCodewarsUserService {
 
-
     private final CodewarsRepository codewarsRepository;
 
     public CodewarsUserDTO addUser(CodewarsUserDTO codewarsUser){
@@ -21,11 +21,19 @@ public class AddCodewarsUserService {
         if(username.isPresent()){
             throw new UserAlreadyExistsException("This user already exists");
         }
+
+//        CodewarsUser newCodewarsUser = CodewarsUser.builder()
+//                .honor(codewarsUser.getHonor())
+//                .ranks(codewarsUser.getRanks())
+//                .name(codewarsUser.getName())
+//                .clan(codewarsUser.getClan())
+//                .username(codewarsUser.getUsername())
+//                .comments(codewarsUser.getComments())
+//                .ranks(codewarsUser.getRanks())
+//                .build();
+
         codewarsRepository.save(codewarsUser);
         return codewarsUser;
     }
 
-    public void delete(String username) {
-        codewarsRepository.deleteByUsername(username);
-    }
 }
