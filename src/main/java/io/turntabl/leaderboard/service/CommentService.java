@@ -1,6 +1,8 @@
 package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
+import io.turntabl.leaderboard.exceptions.UserAlreadyExistsException;
+import io.turntabl.leaderboard.exceptions.UserNotFoundException;
 import io.turntabl.leaderboard.model.Comment;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
 import io.turntabl.leaderboard.repository.CommentRepository;
@@ -17,13 +19,14 @@ public class CommentService {
 
     private final CodewarsRepository codewarsRepository;
 
-    public Comment addComment(Comment comment, String username) {
-        Optional<CodewarsUserDTO> commentuser = codewarsRepository.findByUsername(username);
-        if (commentuser.isPresent()){
-            commentuser.get().getComments().add(comment);
-            codewarsRepository.save(commentuser.get());
+    public Comment addComment(Comment comment, String id) {
+        Optional<CodewarsUserDTO> commentuser = codewarsRepository.findById(id);
+        if (!commentuser.isPresent()){
+            throw new UserNotFoundException("This user was not found.");
         }
+        commentuser.get().getComments().add(comment);
+        codewarsRepository.save(commentuser.get());
+        comment.setCodewarsuserid(id);
         return commentRepository.save(comment);
-
     }
 }

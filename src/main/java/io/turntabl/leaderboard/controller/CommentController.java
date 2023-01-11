@@ -12,9 +12,9 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/comment/{username}")
-    public Comment addComment(@RequestBody Comment comment, @PathVariable String username){
+    @PostMapping("/comment/{id}")
+    public Comment addComment(@RequestBody Comment comment, @PathVariable String id){
 
-        return commentService.addComment(comment, username);
+        return commentService.addComment(comment, id);
     }
 }

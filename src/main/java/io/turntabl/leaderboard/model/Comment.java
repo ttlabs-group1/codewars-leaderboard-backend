@@ -11,5 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Comment {
     @Id
     private String commentId;
+    private String codewarsuserid;
     private String commentText;
 }

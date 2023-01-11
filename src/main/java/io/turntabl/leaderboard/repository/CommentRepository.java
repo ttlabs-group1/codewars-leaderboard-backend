@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
-//    Optional<Comment> findByUsername(String username);
 }
