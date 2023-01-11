@@ -1,6 +1,5 @@
 package io.turntabl.leaderboard.model;
 
-import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -24,16 +26,26 @@ import java.util.Map;
 public class AccountController {
 
     private AccountService accountService;
-    private final UserRepository userRepository;
 
     @Autowired
     public AccountController(AccountService accountService,
                              UserRepository userRepository) {
         this.accountService = accountService;
-        this.userRepository = userRepository;
     }
 
+    @PostMapping("/account/register")
+    @Operation(summary = "Register a user")
+    @ApiResponses(
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Register a new user",
+                    content = {@Content(
+                            mediaType = "text/xml"
 
+
+                    )})
+
+    )
     public ResponseEntity<ResponseDTO> register(@RequestBody RegisterUserDTO userDTO) {
         accountService.registerUser(userDTO);
 
@@ -51,7 +63,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
                         .success(true)
-                        .data(Map.of("data", user))
+                        .data(Map.of("user", user))
                         .build()
 
                 );
@@ -59,9 +71,9 @@ public class AccountController {
     }
 
     @PostMapping("/account/logout")
-    public ResponseEntity<ResponseDTO> logout() {
+    public ResponseEntity<ResponseDTO> logout(HttpServletRequest request) throws ServletException {
 
-         accountService.logout();
+         accountService.logout(request);
         return  ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
                         .success(true)

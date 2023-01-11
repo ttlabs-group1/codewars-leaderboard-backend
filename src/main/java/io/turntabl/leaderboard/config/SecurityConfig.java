@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.servlet.ServletException;
+
 @Configuration
 public class SecurityConfig {
 
@@ -37,11 +39,8 @@ public class SecurityConfig {
         return http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .mvcMatchers("/api/v1/account/register", "/api/v1/account/login").permitAll()
-                .mvcMatchers("/api/v1/account/logout").authenticated()
+                .mvcMatchers("/api/v1/account/logout/").authenticated()
                 .mvcMatchers("/swagger-ui/index.html").permitAll()
-                //.anyRequest().authenticated()
-                .and()
-                .logout().deleteCookies("JSESSIONID")
                 .and().build();
     }
 }

@@ -7,6 +7,10 @@ import io.turntabl.leaderboard.error.UserNotFoundException;
 import io.turntabl.leaderboard.error.UsernameNotAvailableException;
 import io.turntabl.leaderboard.model.User;
 import io.turntabl.leaderboard.repository.UserRepository;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +19,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 @Service
+@Log4j2
 public class AccountServiceImpl implements AccountService {
 
     private UserRepository userRepository;
@@ -31,14 +39,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User registerUser(RegisterUserDTO userDTO) {
+    public boolean registerUser(RegisterUserDTO userDTO) {
         var optionalUser = userRepository.findByUsername(userDTO.getUsername());
         if (optionalUser.isPresent()) {
             throw new UsernameNotAvailableException("Username Not Available!");
         }
         User user = new User(userDTO.getUsername(), userDTO.getPassword(), userDTO.getFullName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+         userRepository.save(user);
+         return  true;
     }
 
     @Override
@@ -60,13 +69,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void logout() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof UsernamePasswordAuthenticationToken){
-
-            System.out.println(authentication.getName());
-
-        }
+    public void logout(HttpServletRequest request) throws ServletException {
+       try {
+           request.logout();
+       } catch (ServletException exception){
+           log.catching(Level.ERROR,exception);
+       }
     }
 }
