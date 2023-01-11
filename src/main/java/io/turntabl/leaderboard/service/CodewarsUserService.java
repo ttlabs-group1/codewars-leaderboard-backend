@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CodewarsUserService {
+public class CodewarsUserService implements CodewarsUserInterface {
 
 
     private final CodewarsRepository codewarsRepository;

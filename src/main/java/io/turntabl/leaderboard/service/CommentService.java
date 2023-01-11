@@ -2,7 +2,6 @@ package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.exceptions.CommentTextFieldEmptyException;
-import io.turntabl.leaderboard.exceptions.UserAlreadyExistsException;
 import io.turntabl.leaderboard.exceptions.UserNotFoundException;
 import io.turntabl.leaderboard.model.Comment;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentService implements CommentInterface{
 
     private final CommentRepository commentRepository;
 
