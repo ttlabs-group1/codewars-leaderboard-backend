@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AccountController.class)
 @Import(SecurityConfig.class)
+@MockBean(UserDetailsService.class)
 class AccountControllerTest {
 
     @Autowired
@@ -31,9 +33,7 @@ class AccountControllerTest {
     @MockBean
     private AccountService accountService;
     private RegisterUserDTO registerUserDTO;
-
     private LoginUserDTO loginUserDTO;
-
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ class AccountControllerTest {
         registerUserDTO = RegisterUserDTO.builder()
                 .fullName("Fred Arthur")
                 .username("fred")
-                .password("password123")
+                .password("pass123")
                 .build();
         loginUserDTO = new LoginUserDTO("fred", "pass123");
 
@@ -67,7 +67,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Create User Account With Existing username Should Fail")
-    void register_GivenExistingUSername_ShouldFail() throws Exception {
+    void register_GivenExistingUsername_ShouldFail() throws Exception {
 
         when(accountService.registerUser(registerUserDTO)).thenThrow(new UsernameNotAvailableException("Username Not Available!"));
 
@@ -86,7 +86,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Login With Valid Credentials Should Pass")
-    void login_GivenValidCredentials_ShouldSucced() throws Exception {
+    void login_GivenValidCredentials_ShouldSucceed() throws Exception {
         when(accountService.authenticateUser(loginUserDTO))
                 .thenReturn(new UserDTO("fred", "Fred Arthur"));
         mockMvc.perform(post("/api/v1/account/register")
