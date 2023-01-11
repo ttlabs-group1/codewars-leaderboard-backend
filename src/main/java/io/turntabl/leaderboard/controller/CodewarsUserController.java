@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/getUser")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class CodewarsUserController {
     private final GetUserFromCodewarsService getUserFromCodewarsService;
@@ -20,7 +20,7 @@ public class CodewarsUserController {
     @PostMapping("/addUser/{username}")
     public ResponseEntity<CodewarsUserDTO> addCodewarsUser(@PathVariable String username) {
         CodewarsUserDTO codewarsUser = getUserFromCodewarsService.getCodewarsUserService(username);
-        return ResponseEntity.status(HttpStatus.OK).body(addCodewarsUserService.addUser(codewarsUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(addCodewarsUserService.addUser(codewarsUser));
     }
 
     @DeleteMapping("/deleteUser/{username}")
