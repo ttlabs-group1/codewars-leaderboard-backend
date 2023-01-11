@@ -2,7 +2,6 @@ package io.turntabl.leaderboard.controller;
 
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithRanks;
 import io.turntabl.leaderboard.dto.ResponseDTO;
 import io.turntabl.leaderboard.service.AddCodewarsUserServiceImpl;
 import io.turntabl.leaderboard.service.GetCodewarsUsersServiceImpl;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,7 +49,7 @@ public class LeaderboardController {
 
 
     @GetMapping("/getUsers")
-    public ResponseEntity<ResponseDTO> getCodewarsUserByLanguage(@RequestParam String sortBy) {
+    public ResponseEntity<ResponseDTO> getCodewarsUserWithFilter(@RequestParam String sortBy) {
         if (sortBy.equals("overall")) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseDTO.builder()
