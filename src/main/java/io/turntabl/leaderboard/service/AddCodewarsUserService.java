@@ -22,16 +22,6 @@ public class AddCodewarsUserService {
             throw new UserAlreadyExistsException("This user already exists");
         }
 
-//        CodewarsUser newCodewarsUser = CodewarsUser.builder()
-//                .honor(codewarsUser.getHonor())
-//                .ranks(codewarsUser.getRanks())
-//                .name(codewarsUser.getName())
-//                .clan(codewarsUser.getClan())
-//                .username(codewarsUser.getUsername())
-//                .comments(codewarsUser.getComments())
-//                .ranks(codewarsUser.getRanks())
-//                .build();
-
         codewarsRepository.save(codewarsUser);
         return codewarsUser;
     }
