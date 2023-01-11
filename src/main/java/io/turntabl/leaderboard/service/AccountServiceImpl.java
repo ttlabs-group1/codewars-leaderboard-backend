@@ -56,7 +56,6 @@ public class AccountServiceImpl implements AccountService {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword())
-
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

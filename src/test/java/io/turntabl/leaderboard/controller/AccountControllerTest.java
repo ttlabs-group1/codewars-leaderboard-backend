@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,20 +32,17 @@ class AccountControllerTest {
     @MockBean
     private AccountService accountService;
     private RegisterUserDTO registerUserDTO;
-
     private LoginUserDTO loginUserDTO;
 
 
     @BeforeEach
     void setUp() {
-
         registerUserDTO = RegisterUserDTO.builder()
                 .fullName("Fred Arthur")
                 .username("fred")
                 .password("password123")
                 .build();
         loginUserDTO = new LoginUserDTO("fred", "pass123");
-
     }
 
     @Test
@@ -64,12 +62,12 @@ class AccountControllerTest {
                         """)).andExpect(status().isOk());
     }
 
-
     @Test
     @DisplayName("Create User Account With Existing username Should Fail")
-    void register_GivenExistingUSername_ShouldFail() throws Exception {
+    void register_GivenExistingUsername_ShouldFail() throws Exception {
 
-        when(accountService.registerUser(registerUserDTO)).thenThrow(new UsernameNotAvailableException("Username Not Available!"));
+        when(accountService.registerUser(registerUserDTO))
+                .thenThrow(new UsernameNotAvailableException("Username Not Available!"));
 
         mockMvc.perform(post("/api/v1/account/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,19 +79,20 @@ class AccountControllerTest {
                                 }
                                 """)).andExpect(status().isConflict())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
     }
 
     @Test
     @DisplayName("Login With Valid Credentials Should Pass")
     void login_GivenValidCredentials_ShouldSucced() throws Exception {
+
         when(accountService.authenticateUser(loginUserDTO))
                 .thenReturn(new UserDTO("fred", "Fred Arthur"));
+
         mockMvc.perform(post("/api/v1/account/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {
-                        "username": "kofi",
+                        "username": "fred",
                         "password": "pass123"
                         }
                         """)).andExpect(status().isOk());
@@ -103,8 +102,10 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Logout should succeed")
-    void logout(){
-
-//        mockMvc.perform()
+    void logout() throws Exception {
+        mockMvc.perform(post("/api/v1/account/logout")
+                ).andExpect(status().isOk())
+                .andExpect(content().string("{\"success\":true}"))
+                .andExpect(unauthenticated());
     }
 }
