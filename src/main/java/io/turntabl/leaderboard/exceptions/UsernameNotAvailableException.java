@@ -1,4 +1,4 @@
-package io.turntabl.leaderboard.error;
+package io.turntabl.leaderboard.exceptions;
 
 public class UsernameNotAvailableException extends RuntimeException{
     public UsernameNotAvailableException() {

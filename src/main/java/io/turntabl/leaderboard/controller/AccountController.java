@@ -63,7 +63,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
                         .success(true)
-                        .data(Map.of("user", user))
+                        .data(Map.of("data", user))
                         .build()
 
                 );

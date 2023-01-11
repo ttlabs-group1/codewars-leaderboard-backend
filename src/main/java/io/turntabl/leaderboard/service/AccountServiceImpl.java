@@ -3,12 +3,10 @@ package io.turntabl.leaderboard.service;
 import io.turntabl.leaderboard.dto.LoginUserDTO;
 import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import io.turntabl.leaderboard.dto.UserDTO;
-import io.turntabl.leaderboard.error.UserNotFoundException;
-import io.turntabl.leaderboard.error.UsernameNotAvailableException;
+import io.turntabl.leaderboard.exceptions.UserNotFoundException;
+import io.turntabl.leaderboard.exceptions.UsernameNotAvailableException;
 import io.turntabl.leaderboard.model.User;
 import io.turntabl.leaderboard.repository.UserRepository;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
         User user = new User(userDTO.getUsername(), userDTO.getPassword(), userDTO.getFullName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
          userRepository.save(user);
-         return  true;
+         return true;
     }
 
     @Override

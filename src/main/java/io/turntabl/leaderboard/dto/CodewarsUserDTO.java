@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class CodewarsUserDTO {
     private String username;
+    private String id;
     private String name;
     private int honor;
     private String clan;
