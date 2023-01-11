@@ -1,6 +1,7 @@
 package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
+import io.turntabl.leaderboard.exceptions.CommentTextFieldEmptyException;
 import io.turntabl.leaderboard.exceptions.UserAlreadyExistsException;
 import io.turntabl.leaderboard.exceptions.UserNotFoundException;
 import io.turntabl.leaderboard.model.Comment;
@@ -23,6 +24,8 @@ public class CommentService {
         Optional<CodewarsUserDTO> commentuser = codewarsRepository.findById(id);
         if (!commentuser.isPresent()){
             throw new UserNotFoundException("This user was not found.");
+        }else if(comment.getCommentText().isEmpty()){
+            throw new CommentTextFieldEmptyException("Comment text cannot be empty.");
         }
         commentuser.get().getComments().add(comment);
         codewarsRepository.save(commentuser.get());
