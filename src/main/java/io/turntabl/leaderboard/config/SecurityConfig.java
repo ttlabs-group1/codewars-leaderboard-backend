@@ -15,7 +15,7 @@ import javax.servlet.ServletException;
 @Configuration
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
