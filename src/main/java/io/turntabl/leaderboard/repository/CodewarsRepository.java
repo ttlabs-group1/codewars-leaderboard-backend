@@ -9,5 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface CodewarsRepository extends MongoRepository<CodewarsUserDTO, Long> {
+    Optional<CodewarsUserDTO> findById(String id);
+
+    void deleteByUsername(String username);
     Optional<CodewarsUserDTO> findByUsername(String username);
 }

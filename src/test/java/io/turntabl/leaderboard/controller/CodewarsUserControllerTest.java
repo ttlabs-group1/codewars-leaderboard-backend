@@ -29,16 +29,15 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 
-@WebMvcTest(controllers = LeaderboardController.class)
+@WebMvcTest(controllers = CodewarsUserController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
-    public class LeaderboardControllerTest {
-
+public class CodewarsUserControllerTest{
     private CodewarsUserWithHonorDTO codewarsUserWithHonor;
 
     private CodewarsUserDTO codewarsUser;
 
-    private Comment comment;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -54,18 +53,7 @@ import static org.mockito.BDDMockito.given;
                 .username("john47")
                 .build();
 
-        codewarsUserWithHonor = CodewarsUserWithHonorDTO.builder()
-                .honor(8)
-                .name("John")
-                .username("john47")
-                .build();
 
-        comment = Comment.builder()
-                        .commentText("Ana")
-                                .commentId("frfrfr")
-                                        .build();
-
-        codewarsUserWithHonorDTOS.add(codewarsUserWithHonor);
     }
 
     @Autowired
@@ -84,26 +72,21 @@ import static org.mockito.BDDMockito.given;
     @MockBean
     private CodewarsRepository codewarsRepository;
 
-    @MockBean
-    private CommentInterface commentInterface;
-
-    @MockBean
-    private CommentRepository commentRepository;
 
     @Test
     public void CodewarsUserController_AddCodewarsUser_ReturnCreated() throws Exception {
         given(addCodewarsUserServiceImpl.addUser(ArgumentMatchers.any())).willReturn(codewarsUser);
-        given(getUserFromCodewarsServiceImpl.getCodewarsUserService(ArgumentMatchers.any())).willReturn(codewarsUser);
-        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/addUser/kweks45"))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", CoreMatchers.is(codewarsUserWithHonor.getUsername())));
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/user/addUser/kweks45"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.data.username", CoreMatchers.is(codewarsUser.getUsername())));
     }
 
+
     @Test
-    public void CodewarsUserController_GetCodewarsUser_ReturnCreated() throws Exception {
-        given(getCodewarsUsersServiceImpl.getUsersByHonorDescending()).willReturn(codewarsUserWithHonorDTOS);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getUsers/honors"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.data.[0].username", CoreMatchers.is(codewarsUserWithHonor.getUsername())));
+    public void CodewarsUserController_DeleteCodewarsUser_ReturnOK() throws Exception {
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/user/deleteUser/kweks45"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
 }
+

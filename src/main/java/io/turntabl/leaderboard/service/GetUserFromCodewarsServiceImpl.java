@@ -1,6 +1,5 @@
 package io.turntabl.leaderboard.service;
 
-
 import io.turntabl.leaderboard.client.CodewarsClient;
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.model.CodewarsUser;
@@ -15,12 +14,11 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class GetUserFromCodewarsServiceImpl implements GetUserFromCodewarsService {
+public class GetUserFromCodewarsServiceImpl {
     private final CodewarsClient codewarsClient;
 
-    public CodewarsUserDTO getCodewarsUserService(String username){
+    public CodewarsUserDTO getCodewarsUserService(String username) {
         CodewarsUser codewarsUser = codewarsClient.getCodewarsUser(username);
-
         List<Comment> comments = new ArrayList<>();
 
         return CodewarsUserDTO.builder()
