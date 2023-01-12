@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.webjars.NotFoundException;
 
+import javax.servlet.ServletException;
+
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -33,14 +35,21 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                                 .build()
                 );
     }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseDTO> userNotFoundOnCodewarsExceptionHandler(NotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ResponseDTO.builder()
                         .success(false)
                         .message(exception.getMessage())
-                        .build()
+                        .build());
+    }
+    @ExceptionHandler(LogoutFailedException.class)
+    public ResponseEntity<ResponseDTO> logoutFailedException(LogoutFailedException exception) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                                .success(false)
+                                .message(exception.getMessage())
+                                .build()
                 );
     }
 }
