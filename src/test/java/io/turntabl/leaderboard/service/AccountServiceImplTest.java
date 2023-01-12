@@ -15,7 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,12 +30,8 @@ import java.util.Optional;
 class AccountServiceImplTest {
     @InjectMocks
     private AccountServiceImpl accountService;
-
     @Mock
     private UserRepository userRepository;
-    @MockBean
-    private AuthenticationManager authenticationManager;
-
     @Mock
     private PasswordEncoder passwordEncoder;
     private RegisterUserDTO registerUser;
@@ -77,7 +76,6 @@ class AccountServiceImplTest {
                     accountService.registerUser(registerUser);
                 }).isInstanceOf(UsernameNotAvailableException.class)
                 .hasMessage("Username Not Available!");
-
     }
 
     @Test
