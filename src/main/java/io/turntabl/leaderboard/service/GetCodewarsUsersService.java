@@ -15,4 +15,6 @@ public interface GetCodewarsUsersService {
 
     public ResponseDTO getUsersByOverallByFilter(String sortBy);
 
+    void updateCodewarsUsers();
+
 }

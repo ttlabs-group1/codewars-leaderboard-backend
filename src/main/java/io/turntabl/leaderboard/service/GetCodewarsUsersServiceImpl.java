@@ -1,27 +1,36 @@
 package io.turntabl.leaderboard.service;
 
+import io.turntabl.leaderboard.client.CodewarsClient;
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.dto.CodewarsUserWithHonorDTO;
 import io.turntabl.leaderboard.dto.CodewarsUserWithRanksDTO;
 import io.turntabl.leaderboard.dto.ResponseDTO;
 import io.turntabl.leaderboard.exceptions.UserNotFoundException;
+import io.turntabl.leaderboard.model.CodewarsUser;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class GetCodewarsUsersServiceImpl implements GetCodewarsUsersService {
     private final CodewarsRepository codewarsRepository;
 
+    private final CodewarsClient codewarsClient;
     private final MongoTemplate mongoTemplate;
 
     public List<CodewarsUserWithHonorDTO> getUsersByHonorDescending() {
@@ -90,5 +99,26 @@ public class GetCodewarsUsersServiceImpl implements GetCodewarsUsersService {
                         .success(true)
                         .data(Map.of("data", this.getUsersByLanguage(sortBy)))
                         .build();
+    }
+
+    @Override
+    @Scheduled(fixedRate = 240000)
+    public void updateCodewarsUsers() {
+        List<CodewarsUserDTO> existingCodewarsUsers = codewarsRepository.findAll();
+        if (existingCodewarsUsers.size() != 0) {
+            List<String> listOfUserIDs = new ArrayList<>();
+            List<CodewarsUser> listOfCodewarsUsers = new ArrayList<>();
+            existingCodewarsUsers.forEach(codewarsUser -> listOfUserIDs.add(codewarsUser.getId()));
+            listOfUserIDs.forEach(id -> listOfCodewarsUsers.add(codewarsClient.getCodewarsUser(id)));
+
+            List<CodewarsUserDTO> codewarsUserDTOS = listOfCodewarsUsers.stream().map(
+                    existingCodewarsUser -> CodewarsUserDTO.builder()
+                            .id(existingCodewarsUser.getId())
+                            .ranks(existingCodewarsUser.getRanks())
+                            .name(existingCodewarsUser.getName())
+                            .username(existingCodewarsUser.getUsername())
+                            .build()).toList();
+            codewarsRepository.saveAll(codewarsUserDTOS);
+        }
     }
 }
