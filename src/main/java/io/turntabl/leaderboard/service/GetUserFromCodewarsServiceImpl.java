@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class GetUserFromCodewarsServiceImpl {
+public class GetUserFromCodewarsServiceImpl implements GetUserFromCodewarsService {
     private final CodewarsClient codewarsClient;
 
     public CodewarsUserDTO getCodewarsUserService(String username){

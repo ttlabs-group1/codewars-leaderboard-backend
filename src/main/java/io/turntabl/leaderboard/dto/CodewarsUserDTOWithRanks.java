@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class CodewarsUserDTOWithRanks {
     private String username;
-
     private String codewarsId;
     private String name;
     private Rank ranks;
