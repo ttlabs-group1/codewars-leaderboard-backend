@@ -28,7 +28,7 @@ public class LeaderboardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addCodewarsUserServiceImpl.addUser(codewarsUser));
     }
 
-    @GetMapping("/getUser/{username}")
+    @GetMapping("/getUser/codewars/{username}")
     public ResponseEntity<ResponseDTO> getCodewarsUser(@PathVariable String username) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
@@ -54,6 +54,15 @@ public class LeaderboardController {
                 .body(ResponseDTO.builder()
                         .success(true)
                         .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByOverallByFilter(sortBy)))
+                        .build());
+    }
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<ResponseDTO> getCodewarsUserWithID(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByCodewarsID(id)))
                         .build());
     }
 }
