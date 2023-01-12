@@ -1,8 +1,5 @@
 package io.turntabl.leaderboard.exceptions;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
 public class CommentTextFieldEmptyException extends RuntimeException{
     public CommentTextFieldEmptyException() {}
 

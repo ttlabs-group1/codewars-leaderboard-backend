@@ -2,7 +2,6 @@ package io.turntabl.leaderboard.repository;
 
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
-import io.turntabl.leaderboard.model.CodewarsUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
