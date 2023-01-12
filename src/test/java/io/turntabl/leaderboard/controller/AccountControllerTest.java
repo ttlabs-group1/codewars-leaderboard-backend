@@ -4,7 +4,8 @@ import io.turntabl.leaderboard.config.SecurityConfig;
 import io.turntabl.leaderboard.dto.LoginUserDTO;
 import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import io.turntabl.leaderboard.dto.UserDTO;
-import io.turntabl.leaderboard.error.UsernameNotAvailableException;
+import io.turntabl.leaderboard.exceptions.UsernameNotAvailableException;
+import io.turntabl.leaderboard.repository.UserRepository;
 import io.turntabl.leaderboard.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ class AccountControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private AccountService accountService;
+
     private RegisterUserDTO registerUserDTO;
     private LoginUserDTO loginUserDTO;
 
@@ -97,8 +99,6 @@ class AccountControllerTest {
                         "password": "pass123"
                         }
                         """)).andExpect(status().isOk());
-
-
     }
 
     @Test
