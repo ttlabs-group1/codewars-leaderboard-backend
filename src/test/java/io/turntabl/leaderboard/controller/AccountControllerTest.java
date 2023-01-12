@@ -5,7 +5,6 @@ import io.turntabl.leaderboard.dto.LoginUserDTO;
 import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import io.turntabl.leaderboard.dto.UserDTO;
 import io.turntabl.leaderboard.exceptions.UsernameNotAvailableException;
-import io.turntabl.leaderboard.repository.UserRepository;
 import io.turntabl.leaderboard.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
