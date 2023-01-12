@@ -5,6 +5,7 @@ import io.turntabl.leaderboard.dto.CodewarsUserDTO;
 import io.turntabl.leaderboard.dto.CodewarsUserWithHonorDTO;
 import io.turntabl.leaderboard.dto.CodewarsUserWithRanksDTO;
 import io.turntabl.leaderboard.dto.ResponseDTO;
+import io.turntabl.leaderboard.exceptions.CommentTextFieldEmptyException;
 import io.turntabl.leaderboard.exceptions.UserNotFoundException;
 import io.turntabl.leaderboard.model.CodewarsUser;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 
 @Service
@@ -85,6 +86,15 @@ public class GetCodewarsUsersServiceImpl implements GetCodewarsUsersService {
                         .username(existingCodewarsUser.getUsername())
                         .build()
         ).toList();
+    }
+
+    @Override
+    public Optional<CodewarsUserDTO> getUsersByCodewarsID(String id) {
+        Optional<CodewarsUserDTO> existingCodewarsUser = codewarsRepository.findById(id);
+        if (existingCodewarsUser.isEmpty()){
+            throw new UserNotFoundException("This user was not found.");
+        }
+        return existingCodewarsUser;
     }
 
     @Override

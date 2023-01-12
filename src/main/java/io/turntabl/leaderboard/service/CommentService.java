@@ -21,10 +21,10 @@ public class CommentService implements CommentInterface{
 
     public Comment addComment(Comment comment, String id) {
         Optional<CodewarsUserDTO> commentuser = codewarsRepository.findById(id);
-        if (!commentuser.isPresent()){
-            throw new UserNotFoundException("This user was not found.");
-        }else if(comment.getCommentText().isEmpty()){
-            throw new CommentTextFieldEmptyException("Comment text cannot be empty.");
+            if (!commentuser.isPresent()){
+                throw new UserNotFoundException("This user was not found.");
+            }else if(comment.getCommentText().isEmpty()){
+                throw new CommentTextFieldEmptyException("Comment text cannot be empty.");
         }
         commentuser.get().getComments().add(comment);
         codewarsRepository.save(commentuser.get());
