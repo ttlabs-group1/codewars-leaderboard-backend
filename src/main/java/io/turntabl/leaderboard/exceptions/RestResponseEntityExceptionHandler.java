@@ -12,7 +12,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ResponseDTO> userAlreadyExistsExceptionHandler(UserAlreadyExistsException exception) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ResponseDTO.builder()
                         .success(false)
                         .message(exception.getMessage())
@@ -22,7 +22,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ResponseDTO> userNotFoundExceptionHandler(UserNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ResponseDTO.builder()
                         .success(false)
                         .message(exception.getMessage())
@@ -32,7 +32,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(CommentTextFieldEmptyException.class)
     public ResponseEntity<ResponseDTO> commentTextFieldEmptyExceptionHandler(CommentTextFieldEmptyException exception) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body(ResponseDTO.builder()
                         .success(false)
                         .message(exception.getMessage())
