@@ -25,9 +25,13 @@ public class CodewarsUserController {
 
 
     @PostMapping("user/addUser")
-    public CodewarsUserDTO addSomeone(@RequestBody CodewarsUserDTO codewarsUserDTO){
+    public ResponseEntity<ResponseDTO> addCodewarsUser(@RequestBody CodewarsUserDTO codewarsUserDTO){
         CodewarsUserDTO codewarsUser = getUserFromCodewarsServiceImpl.getCodewarsUserService(codewarsUserDTO.getUsername());
-        return addCodewarsUserService.addUser(codewarsUser);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data", addCodewarsUserService.addUser(codewarsUser)))
+                        .build());
     }
 
     @DeleteMapping("user/deleteUser/{username}")
