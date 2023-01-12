@@ -2,35 +2,42 @@ package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.LoginUserDTO;
 import io.turntabl.leaderboard.dto.RegisterUserDTO;
-import io.turntabl.leaderboard.error.UsernameNotAvailableException;
+
+import io.turntabl.leaderboard.exceptions.UsernameNotAvailableException;
 import io.turntabl.leaderboard.model.User;
 import io.turntabl.leaderboard.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
+import static org.mockito.ArgumentMatchers.any;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class AccountServiceImplTest {
-    @MockBean
+    @InjectMocks
+    private AccountServiceImpl accountService;
+
+    @Mock
     private UserRepository userRepository;
-    @Autowired
-    private AccountService accountService;
     @MockBean
     private AuthenticationManager authenticationManager;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
     private RegisterUserDTO registerUser;
     private LoginUserDTO loginUser;
-    @MockBean
+    @Mock
     private HttpServletRequest request;
 
     @BeforeEach
@@ -48,6 +55,9 @@ class AccountServiceImplTest {
     void registerUser_GivenNewUsername_ShouldSucceed() {
         Mockito.when(userRepository.findByUsername(registerUser.getUsername()))
                 .thenReturn(Optional.empty());
+
+        Mockito.when(passwordEncoder.encode(any(String.class)))
+                .thenReturn("fjsskwfdhwjdhwqahq");
 
         boolean result = accountService.registerUser(registerUser);
         Assertions.assertEquals(true, result);
