@@ -33,7 +33,7 @@ public class LeaderboardController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
                         .success(true)
-                        .data(Map.of("data",getUserFromCodewarsServiceImpl.getCodewarsUserService(username)))
+                        .data(Map.of("data", getUserFromCodewarsServiceImpl.getCodewarsUserService(username)))
                         .build());
     }
 
@@ -45,22 +45,15 @@ public class LeaderboardController {
                         .success(true)
                         .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByHonorDescending()))
                         .build());
-    };
+    }
 
 
     @GetMapping("/getUsers")
     public ResponseEntity<ResponseDTO> getCodewarsUserWithFilter(@RequestParam String sortBy) {
-        if (sortBy.equals("overall")) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseDTO.builder()
-                            .success(true)
-                            .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByOverallScoreDescending()))
-                            .build());
-        }
         return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseDTO.builder()
-                            .success(true)
-                            .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByLanguage(sortBy)))
-                            .build());
-        }
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByOverallByFilter(sortBy)))
+                        .build());
+    }
 }

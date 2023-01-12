@@ -2,7 +2,7 @@ package io.turntabl.leaderboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithHonor;
+import io.turntabl.leaderboard.dto.CodewarsUserWithHonorDTO;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
 import io.turntabl.leaderboard.service.AddCodewarsUserServiceImpl;
 import io.turntabl.leaderboard.service.GetCodewarsUsersServiceImpl;
@@ -34,13 +34,13 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
     public class LeaderboardControllerTest {
 
-    private CodewarsUserDTOWithHonor codewarsUserWithHonor;
+    private CodewarsUserWithHonorDTO codewarsUserWithHonor;
 
     private CodewarsUserDTO codewarsUser;
     @Autowired
     private ObjectMapper objectMapper;
 
-    List<CodewarsUserDTOWithHonor> codewarsUserDTOWithHonors = new ArrayList<>();
+    List<CodewarsUserWithHonorDTO> codewarsUserWithHonorDTOS = new ArrayList<>();
 
     List<CodewarsUserDTO> codewarsUserDTO = new ArrayList<>();
     @BeforeEach
@@ -52,14 +52,14 @@ import static org.mockito.BDDMockito.given;
                 .username("john47")
                 .build();
 
-        codewarsUserWithHonor = CodewarsUserDTOWithHonor.builder()
+        codewarsUserWithHonor = CodewarsUserWithHonorDTO.builder()
                 .honor(8)
                 .name("John")
                 .username("john47")
                 .build();
 
 
-        codewarsUserDTOWithHonors.add(codewarsUserWithHonor);
+        codewarsUserWithHonorDTOS.add(codewarsUserWithHonor);
     }
 
     @Autowired
@@ -86,7 +86,7 @@ import static org.mockito.BDDMockito.given;
 
     @Test
     public void CodewarsUserController_GetCodewarsUser_ReturnCreated() throws Exception {
-        given(getCodewarsUsersServiceImpl.getUsersByHonorDescending()).willReturn(codewarsUserDTOWithHonors);
+        given(getCodewarsUsersServiceImpl.getUsersByHonorDescending()).willReturn(codewarsUserWithHonorDTOS);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getUsers/honors"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.data.[0].username", CoreMatchers.is(codewarsUserWithHonor.getUsername())));

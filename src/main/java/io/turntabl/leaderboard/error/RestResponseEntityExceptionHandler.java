@@ -15,7 +15,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(UsernameNotAvailableException.class)
     public ResponseEntity<ResponseDTO> usernameNotAvailableExceptionHandler(UsernameNotAvailableException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ResponseDTO.builder()
                                 .success(false)
                                 .message(exception.getMessage())

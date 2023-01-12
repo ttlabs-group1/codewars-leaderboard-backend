@@ -1,15 +1,18 @@
 package io.turntabl.leaderboard.service;
 
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithHonor;
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithRanks;
+import io.turntabl.leaderboard.dto.CodewarsUserWithHonorDTO;
+import io.turntabl.leaderboard.dto.CodewarsUserWithRanksDTO;
+import io.turntabl.leaderboard.dto.ResponseDTO;
 
 import java.util.List;
 
 public interface GetCodewarsUsersService {
-    List<CodewarsUserDTOWithHonor> getUsersByHonorDescending();
+    List<CodewarsUserWithHonorDTO> getUsersByHonorDescending();
 
-    public List<CodewarsUserDTOWithRanks> getUsersByOverallScoreDescending();
+    public List<CodewarsUserWithRanksDTO> getUsersByOverallScoreDescending();
 
-    public List<CodewarsUserDTOWithRanks> getUsersByLanguage(String language);
+    public List<CodewarsUserWithRanksDTO> getUsersByLanguage(String language);
+
+    public ResponseDTO getUsersByOverallByFilter(String sortBy);
 
 }

@@ -6,9 +6,8 @@ import lombok.Data;
 
 @Builder
 @Data
-public class CodewarsUserDTOWithRanks {
+public class CodewarsUserWithRanksDTO {
     private String username;
-
     private String codewarsId;
     private String name;
     private Rank ranks;
