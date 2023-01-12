@@ -1,6 +1,7 @@
 package io.turntabl.leaderboard.client;
 
 
+import io.turntabl.leaderboard.error.RestTemplateResponseErrorHandler;
 import io.turntabl.leaderboard.model.CodewarsUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,9 @@ public class CodewarsClient {
     private String baseUrl;
 
     public CodewarsUser getCodewarsUser(String username) {
-        return restTemplateBuilder.build()
+        return restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler()).
+                build()
                 .getForObject(baseUrl + username,
                         CodewarsUser.class);
     }

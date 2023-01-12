@@ -2,34 +2,44 @@ package io.turntabl.leaderboard.controller;
 
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
-import io.turntabl.leaderboard.service.AddCodewarsUserService;
-import io.turntabl.leaderboard.service.DeleteCodewarsUserService;
-import io.turntabl.leaderboard.service.GetUserFromCodewarsService;
+import io.turntabl.leaderboard.dto.ResponseDTO;
+import io.turntabl.leaderboard.service.AddCodewarsUserServiceImpl;
+import io.turntabl.leaderboard.service.DeleteCodewarsUserServiceImpl;
+import io.turntabl.leaderboard.service.GetUserFromCodewarsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class CodewarsUserController {
-    private final GetUserFromCodewarsService getUserFromCodewarsService;
-    private final AddCodewarsUserService addCodewarsUserService;
+    private final GetUserFromCodewarsServiceImpl getUserFromCodewarsServiceImpl;
+    private final AddCodewarsUserServiceImpl addCodewarsUserService;
 
-    private final DeleteCodewarsUserService deleteCodewarsUserService;
+    private final DeleteCodewarsUserServiceImpl deleteCodewarsUserServiceImpl;
 
 
-    @PostMapping("/addUser/{username}")
-    public ResponseEntity<CodewarsUserDTO> addCodewarsUser(@PathVariable String username) {
-        CodewarsUserDTO codewarsUser = getUserFromCodewarsService.getCodewarsUserService(username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addCodewarsUserService.addUser(codewarsUser));
+    @PostMapping("user/addUser/{username}")
+    public ResponseEntity<ResponseDTO> addCodewarsUser(@PathVariable String username) {
+        CodewarsUserDTO codewarsUser = getUserFromCodewarsServiceImpl.getCodewarsUserService(username);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data", addCodewarsUserService.addUser(codewarsUser)))
+                        .build());
     }
 
-    @DeleteMapping("/deleteUser/{username}")
-    public void deleteUser(@PathVariable String username){
-        deleteCodewarsUserService.delete(username);
+    @DeleteMapping("user/deleteUser/{username}")
+    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable String username) {
+        deleteCodewarsUserServiceImpl.delete(username);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data", "User has been deleted"))
+                        .build());
     }
-
-
 }

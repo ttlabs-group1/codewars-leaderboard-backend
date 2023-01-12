@@ -1,7 +1,9 @@
 package io.turntabl.leaderboard.exceptions;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException() {}
+public class UserNotFoundException extends RuntimeException{
+    public UserNotFoundException() {
+        super();
+    }
 
     public UserNotFoundException(String message) {
         super(message);
@@ -13,5 +15,9 @@ public class UserNotFoundException extends RuntimeException {
 
     public UserNotFoundException(Throwable cause) {
         super(cause);
+    }
+
+    protected UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

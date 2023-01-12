@@ -9,5 +9,4 @@ class LeaderboardApplicationTests {
 	//@Test
 	void contextLoads() {
 	}
-
 }
