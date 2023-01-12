@@ -1,8 +1,8 @@
 package io.turntabl.leaderboard.service;
 
 import io.turntabl.leaderboard.dto.CodewarsUserDTO;
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithHonor;
-import io.turntabl.leaderboard.dto.CodewarsUserDTOWithRanks;
+import io.turntabl.leaderboard.dto.CodewarsUserWithHonorDTO;
+import io.turntabl.leaderboard.dto.CodewarsUserWithRanksDTO;
 import io.turntabl.leaderboard.model.Rank;
 import io.turntabl.leaderboard.model.RankInfo;
 import io.turntabl.leaderboard.repository.CodewarsRepository;
@@ -65,7 +65,7 @@ public class GetCodewarsUsersServiceTests {
         listOfCodewarsUsers.add(secondCodewarsUserDTO);
         listOfCodewarsUsers.add(thirdCodewarsUserDTO);
         when(codewarsRepository.findAll((Sort) any())).thenReturn(listOfCodewarsUsers);
-        List<CodewarsUserDTOWithHonor> codewarsUserDTOWithHonor = getCodewarsUsersService.getUsersByHonorDescending();
+        List<CodewarsUserWithHonorDTO> codewarsUserDTOWithHonor = getCodewarsUsersService.getUsersByHonorDescending();
         Assertions.assertThat(codewarsUserDTOWithHonor).isNotEmpty();
         Assertions.assertThat(codewarsUserDTOWithHonor.size()).isEqualTo(3);
     }
@@ -79,7 +79,7 @@ public class GetCodewarsUsersServiceTests {
                 .build();
 
 
-        CodewarsUserDTOWithHonor codewarsUserDTOWithHonor = CodewarsUserDTOWithHonor.builder()
+        CodewarsUserWithHonorDTO codewarsUserDTOWithHonor = CodewarsUserWithHonorDTO.builder()
                 .name("pikachu")
                 .honor(9)
                 .username("pikachu47")
@@ -87,11 +87,11 @@ public class GetCodewarsUsersServiceTests {
 
         List<CodewarsUserDTO> listOfCodewarsUsers = new ArrayList<>();
         listOfCodewarsUsers.add(codewarsUserDTO);
-        List<CodewarsUserDTOWithHonor> listOfCodewarsUsersWithHonor = new ArrayList<>();
+        List<CodewarsUserWithHonorDTO> listOfCodewarsUsersWithHonor = new ArrayList<>();
         listOfCodewarsUsersWithHonor.add(codewarsUserDTOWithHonor);
         when(codewarsRepository.findAll((Sort) any())).thenReturn(listOfCodewarsUsers);
 
-        List<CodewarsUserDTOWithHonor> codewarsUserDTOWithHonorFromService = getCodewarsUsersService.getUsersByHonorDescending();
+        List<CodewarsUserWithHonorDTO> codewarsUserDTOWithHonorFromService = getCodewarsUsersService.getUsersByHonorDescending();
 
         Assertions.assertThat(codewarsUserDTOWithHonorFromService).isNotEmpty();
         Assertions.assertThat(codewarsUserDTOWithHonorFromService.size()).isEqualTo(1);
@@ -133,7 +133,7 @@ public class GetCodewarsUsersServiceTests {
                 .username("pikachu47")
                 .build();
 
-        CodewarsUserDTOWithRanks codewarsUserDTOWithRanks = CodewarsUserDTOWithRanks.builder()
+        CodewarsUserWithRanksDTO codewarsUserDTOWithRanks = CodewarsUserWithRanksDTO.builder()
                 .name("pikachu")
                 .username("pikachu47")
                 .ranks(rank)
@@ -141,14 +141,14 @@ public class GetCodewarsUsersServiceTests {
 
         List<CodewarsUserDTO> listOfCodewarsUsers = new ArrayList<>();
         listOfCodewarsUsers.add(codewarsUserDTO);
-        List<CodewarsUserDTOWithRanks> listOfCodewarsUsersWithRanks = new ArrayList<>();
+        List<CodewarsUserWithRanksDTO> listOfCodewarsUsersWithRanks = new ArrayList<>();
         listOfCodewarsUsersWithRanks.add(codewarsUserDTOWithRanks);
         Query query = new Query();
         String language = "python";
         query.addCriteria(Criteria.where(String.format("ranks.languages.%s", language)).exists(true)).with(Sort.by(String.format("ranks.languages.%s.score", language)).descending());
         when(mongoTemplate.find(query,CodewarsUserDTO.class)).thenReturn(listOfCodewarsUsers);
 
-        List<CodewarsUserDTOWithRanks> codewarsUserDTOWithRanksFromService = getCodewarsUsersService.getUsersByLanguage(language);
+        List<CodewarsUserWithRanksDTO> codewarsUserDTOWithRanksFromService = getCodewarsUsersService.getUsersByLanguage(language);
 
         Assertions.assertThat(codewarsUserDTOWithRanksFromService).isNotEmpty();
         Assertions.assertThat(codewarsUserDTOWithRanksFromService.size()).isEqualTo(1);
