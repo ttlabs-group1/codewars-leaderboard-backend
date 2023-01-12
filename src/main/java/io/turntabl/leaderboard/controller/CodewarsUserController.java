@@ -20,12 +20,13 @@ public class CodewarsUserController {
     private final GetUserFromCodewarsServiceImpl getUserFromCodewarsServiceImpl;
     private final AddCodewarsUserServiceImpl addCodewarsUserService;
 
+
     private final DeleteCodewarsUserServiceImpl deleteCodewarsUserServiceImpl;
 
 
-    @PostMapping("user/addUser/{username}")
-    public ResponseEntity<ResponseDTO> addCodewarsUser(@PathVariable String username) {
-        CodewarsUserDTO codewarsUser = getUserFromCodewarsServiceImpl.getCodewarsUserService(username);
+    @PostMapping("user/addUser")
+    public ResponseEntity<ResponseDTO> addCodewarsUser(@RequestBody CodewarsUserDTO codewarsUserDTO){
+        CodewarsUserDTO codewarsUser = getUserFromCodewarsServiceImpl.getCodewarsUserService(codewarsUserDTO.getUsername());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDTO.builder()
                         .success(true)
