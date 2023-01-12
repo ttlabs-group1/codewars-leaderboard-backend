@@ -9,6 +9,7 @@ import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import io.turntabl.leaderboard.dto.ResponseDTO;
 import io.turntabl.leaderboard.repository.UserRepository;
 import io.turntabl.leaderboard.service.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class AccountController {
 
-    private AccountService accountService;
-
-    @Autowired
-    public AccountController(AccountService accountService,
-                             UserRepository userRepository) {
-        this.accountService = accountService;
-    }
+    private final AccountService accountService;
 
     @PostMapping("/account/register")
     @Operation(summary = "Register a user")

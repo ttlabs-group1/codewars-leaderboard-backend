@@ -3,6 +3,7 @@ package io.turntabl.leaderboard.service;
 import io.turntabl.leaderboard.dto.LoginUserDTO;
 import io.turntabl.leaderboard.dto.RegisterUserDTO;
 import io.turntabl.leaderboard.dto.UserDTO;
+import io.turntabl.leaderboard.error.LogoutFailedException;
 import io.turntabl.leaderboard.error.UserNotFoundException;
 import io.turntabl.leaderboard.error.UsernameNotAvailableException;
 import io.turntabl.leaderboard.model.User;
@@ -39,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean registerUser(RegisterUserDTO userDTO) {
+    public boolean registerUser(RegisterUserDTO userDTO) throws UsernameNotAvailableException {
         var optionalUser = userRepository.findByUsername(userDTO.getUsername());
         if (optionalUser.isPresent()) {
             throw new UsernameNotAvailableException("Username Not Available!");
@@ -51,11 +52,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public UserDTO authenticateUser(LoginUserDTO userDTO) {
+    public UserDTO authenticateUser(LoginUserDTO userDTO) throws UserNotFoundException {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword())
-
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -69,11 +69,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void logout(HttpServletRequest request) throws ServletException {
+    public void logout(HttpServletRequest request) throws LogoutFailedException {
        try {
            request.logout();
        } catch (ServletException exception){
-           log.catching(Level.ERROR,exception);
+           throw new LogoutFailedException(exception.getMessage());
        }
     }
 }
