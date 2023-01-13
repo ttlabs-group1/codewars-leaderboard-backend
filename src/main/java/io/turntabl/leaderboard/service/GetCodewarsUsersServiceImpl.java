@@ -126,8 +126,13 @@ public class GetCodewarsUsersServiceImpl implements GetCodewarsUsersService {
                             .id(existingCodewarsUser.getId())
                             .ranks(existingCodewarsUser.getRanks())
                             .name(existingCodewarsUser.getName())
+                            .honor(existingCodewarsUser.getHonor())
+                            .clan(existingCodewarsUser.getClan())
+                            .comments(codewarsRepository.findById(existingCodewarsUser.getId()).get().getComments())
                             .username(existingCodewarsUser.getUsername())
                             .build()).toList();
+
+            log.info(codewarsUserDTOS.toString());
             codewarsRepository.saveAll(codewarsUserDTOS);
         }
     }

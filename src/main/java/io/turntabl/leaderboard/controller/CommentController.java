@@ -5,7 +5,9 @@ import io.turntabl.leaderboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class CommentController {

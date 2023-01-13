@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class LeaderboardController {
@@ -22,12 +24,14 @@ public class LeaderboardController {
     private final GetCodewarsUsersServiceImpl getCodewarsUsersServiceImpl;
     private final AddCodewarsUserServiceImpl addCodewarsUserServiceImpl;
 
+    //add a user from codewars into our system
     @PostMapping("/addUser/{username}")
     public ResponseEntity<CodewarsUserDTO> addCodewarsUser(@PathVariable String username) {
         CodewarsUserDTO codewarsUser = getUserFromCodewarsServiceImpl.getCodewarsUserService(username);
         return ResponseEntity.status(HttpStatus.CREATED).body(addCodewarsUserServiceImpl.addUser(codewarsUser));
     }
 
+    //get a user from codewars external
     @GetMapping("/getUser/codewars/{username}")
     public ResponseEntity<ResponseDTO> getCodewarsUser(@PathVariable String username) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -37,6 +41,7 @@ public class LeaderboardController {
                         .build());
     }
 
+    // sort by honors
     @GetMapping("/getUsers/honors")
     public ResponseEntity<ResponseDTO> getCodewarsUsersByHonor() {
 
@@ -48,6 +53,9 @@ public class LeaderboardController {
     }
 
 
+    // get user by overall and by language
+    // ?sortby=overall
+    // ?sortBy=<language>
     @GetMapping("/getUsers")
     public ResponseEntity<ResponseDTO> getCodewarsUserWithFilter(@RequestParam String sortBy) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -57,6 +65,7 @@ public class LeaderboardController {
                         .build());
     }
 
+    //get a particular user
     @GetMapping("/getUser/{id}")
     public ResponseEntity<ResponseDTO> getCodewarsUserWithID(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK)
