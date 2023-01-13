@@ -1,9 +1,14 @@
 package io.turntabl.leaderboard.controller;
 
+import io.turntabl.leaderboard.dto.ResponseDTO;
 import io.turntabl.leaderboard.model.Comment;
 import io.turntabl.leaderboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
@@ -15,8 +20,12 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/user/comment/{id}")
-    public Comment addComment(@RequestBody Comment comment, @PathVariable String id){
+    public ResponseEntity<ResponseDTO> addComment(@RequestBody Comment comment, @PathVariable String id){
 
-        return commentService.addComment(comment, id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseDTO.builder()
+                        .success(true)
+                        .data(Map.of("data",commentService.addComment(comment, id)))
+                        .build());
     }
 }

@@ -59,10 +59,8 @@ public class LeaderboardController {
     @GetMapping("/getUsers")
     public ResponseEntity<ResponseDTO> getCodewarsUserWithFilter(@RequestParam String sortBy) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseDTO.builder()
-                        .success(true)
-                        .data(Map.of("data", getCodewarsUsersServiceImpl.getUsersByOverallByFilter(sortBy)))
-                        .build());
+                .body(getCodewarsUsersServiceImpl.getUsersByOverallByFilter(sortBy));
+
     }
 
     //get a particular user

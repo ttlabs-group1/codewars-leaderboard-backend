@@ -112,7 +112,7 @@ public class GetCodewarsUsersServiceImpl implements GetCodewarsUsersService {
     }
 
     @Override
-    @Scheduled(fixedRate = 240000)
+    //@Scheduled(fixedRate = 240000)
     public void updateCodewarsUsers() {
         List<CodewarsUserDTO> existingCodewarsUsers = codewarsRepository.findAll();
         if (existingCodewarsUsers.size() != 0) {
